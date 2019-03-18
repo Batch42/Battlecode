@@ -1,1 +1,3 @@
 Steven Proctor
+Isaac Freshour
+
