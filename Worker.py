@@ -6,7 +6,7 @@ gc = bc.GameController()
 factory_count = 0
 
 #takes a single worker
-def workerWork(worker):
+def workerWork(worker,c):
     try:
         location = worker.location
         if location.is_on_map():
