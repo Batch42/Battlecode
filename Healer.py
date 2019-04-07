@@ -6,8 +6,8 @@ def healerWork(healer):
     try:
         location = healer.location
         if location.is_on_map():
-            nearby = gc.sense_nearby_units(location.map_location(), 50)
-            close = gc.sense_nearby_units(location.map_location(), 30)
+            nearby = gc.sense_nearby_units(location.map_location(), 7)
+            close = gc.sense_nearby_units(location.map_location(), 5)
 
             #Find ally units within line of sight, and attempt to approach, unless they're also a healer.
             for target in nearby:
