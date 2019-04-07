@@ -16,14 +16,14 @@ def healerWork(healer):
                     direction = bc.Direction
                     if target.x == healer.x:
                         if target.y > healer.y:
-                            direction = South
-                        elif target.y < healer.y:
                             direction = North
+                        elif target.y < healer.y:
+                            direction = South
                     elif target.y == healer.y:
                         if target.x > healer.x:
-                            direction = West
-                        elif target.x < healer.x:
                             direction = East
+                        elif target.x < healer.x:
+                            direction = West
                     else:
                         if (target.x > healer.x) and (target.y > healer.y):
                             direction = Northeast
