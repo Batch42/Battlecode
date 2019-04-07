@@ -12,21 +12,21 @@ while True:
     try:
         c = Counter()
         for unit in gc.my_units():
-            if unit.unit_type()==UnitType.Worker:
-                next.workers+=1
-            if unit.unit_type()==UnitType.Ranger:
-                next.rangers+=1
-            if unit.unit_type()==UnitType.Factory:
-                next.factories+=1 
-           
+            if unit.unit_type==bc.UnitType.Worker:
+                c.workers+=1
+            if unit.unit_type==bc.UnitType.Ranger:
+                c.rangers+=1
+            if unit.unit_type==bc.UnitType.Factory:
+                c.factories+=1
+
         for unit in gc.my_units():
-            if unit.unit_type()==UnitType.Worker:
-                Worker.workerWork(unit,c)
-            if unit.unit_type()==UnitType.Ranger:
-                Ranger.rangerWork(unit,c)
-            if unit.unit_type()==UnitType.Factory:
-                Econ.factoryWork(unit,c)
-        
+            if unit.unit_type==bc.UnitType.Worker:
+                Worker.workerWork(unit,c,gc)
+            if unit.unit_type==bc.UnitType.Ranger:
+                Ranger.rangerWork(unit,c,gc)
+            if unit.unit_type==bc.UnitType.Factory:
+                Econ.factoryWork(unit,c,gc)
+        Econ.resetFactory()
     except Exception as err:
         print(err)
     sys.stdout.flush()
