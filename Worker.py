@@ -52,18 +52,22 @@ def workerWork(worker):
                         gc.move_robot(worker.id, direction)
                         # Done turn.
                         return True
-            # If a blueprint should be placed, place it. <TODO> How many factories should we have at certain points in the game?
+            # If a blueprint should be placed, place it. TODO How many factories should we have at certain points in the game?
             if factory_count <= 6:
                 for directions in list(bc.Direction):
                     if gc.can_blueprint(worker.id, UnitType.Factory, directions):
                         gc.blueprint(worker.id, UnitType.Factory, directions)
                         factory_count = factory_count + 1
                         return True
-            # Otherwise, go harvest some resources.
+            # If resources are near, go harvest some resources.
             for directions in list(bc.Direction):
                 if gc.can_harvest(worker.id, directions):
                     gc.harvest(worker.id, directions)
                     return True
+            # Otherwise, move.
+            if gc.is_move_ready(worker.id):
+                # TODO Where should we move?
+                return False
 
     except Exception as e:
         print('Error:', e)
