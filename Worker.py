@@ -54,7 +54,7 @@ def workerWork(worker):
                         return True
                     # Move towards the thing in need of repair.
                     else:
-                        direction = move_towards_unit(worker, damaged)
+                        direction = move_towards(worker, damaged.x, damaged.y)
                         # If worker can move in the chosen direction, move.
                         if gc.is_move_ready(worker.id) and gc.can_move(worker.id, direcion):
                             gc.move_robot(worker.id, direction)
@@ -69,17 +69,87 @@ def workerWork(worker):
                         gc.blueprint(worker.id, UnitType.Factory, directions)
                         factory_count = factory_count + 1
                         return True
+
             # If resources are near, go harvest some resources.
             for directions in list(bc.Direction):
                 if gc.can_harvest(worker.id, directions):
                     gc.harvest(worker.id, directions)
                     return True
-            # Otherwise, move.
+
+            # If cannot harvest from an adjacent node, but the node comes up as harvestable on the map, update the map.
+            # Do not return from this block.
+            # TODO earth_karbonite_map and mars_karbonite_map names should probably be updated once memory and run.py files are up to date.
+            if worker.planet == Earth:
+                if earth_karbonite_map[worker.x + 1][worker.y + 1] != 0 and gc.can_harvest(worker.id, Northeast) == False:
+                    earth_karbonite_map[worker.x + 1][worker.y + 1] = 0
+                if earth_karbonite_map[worker.x][worker.y + 1] != 0 and gc.can_harvest(worker.id, North) == False:
+                    earth_karbonite_map[worker.x][worker.y + 1] = 0
+                if earth_karbonite_map[worker.x + 1][worker.y] != 0 and gc.can_harvest(worker.id, East) == False:
+                    earth_karbonite_map[worker.x + 1][worker.y] = 0
+                if earth_karbonite_map[worker.x - 1][worker.y + 1] != 0 and gc.can_harvest(worker.id, Northwest) == False:
+                    earth_karbonite_map[worker.x - 1][worker.y + 1] = 0
+                if earth_karbonite_map[worker.x - 1][worker.y] != 0 and gc.can_harvest(worker.id, West) == False:
+                    earth_karbonite_map[worker.x - 1][worker.y] = 0
+                if earth_karbonite_map[worker.x - 1][worker.y - 1] != 0 and gc.can_harvest(worker.id, Southwest) == False:
+                    earth_karbonite_map[worker.x - 1][worker.y - 1] = 0
+                if earth_karbonite_map[worker.x][worker.y - 1] != 0 and gc.can_harvest(worker.id, South) == False:
+                    earth_karbonite_map[worker.x][worker.y - 1] = 0
+                if earth_karbonite_map[worker.x + 1][worker.y - 1] != 0 and gc.can_harvest(worker.id, Southeast) == False:
+                    earth_karbonite_map[worker.x + 1][worker.y - 1] = 0
+            elif worker.planet == Mars:
+                if mars_karbonite_map[worker.x + 1][worker.y + 1] != 0 and gc.can_harvest(worker.id, Northeast) == False:
+                    mars_karbonite_map[worker.x + 1][worker.y + 1] = 0
+                if mars_karbonite_map[worker.x][worker.y + 1] != 0 and gc.can_harvest(worker.id, North) == False:
+                    mars_karbonite_map[worker.x][worker.y + 1] = 0
+                if mars_karbonite_map[worker.x + 1][worker.y] != 0 and gc.can_harvest(worker.id, East) == False:
+                    mars_karbonite_map[worker.x + 1][worker.y] = 0
+                if mars_karbonite_map[worker.x - 1][worker.y + 1] != 0 and gc.can_harvest(worker.id, Northwest) == False:
+                    mars_karbonite_map[worker.x - 1][worker.y + 1] = 0
+                if mars_karbonite_map[worker.x - 1][worker.y] != 0 and gc.can_harvest(worker.id, West) == False:
+                    mars_karbonite_map[worker.x - 1][worker.y] = 0
+                if mars_karbonite_map[worker.x - 1][worker.y - 1] != 0 and gc.can_harvest(worker.id, Southwest) == False:
+                    mars_karbonite_map[worker.x - 1][worker.y - 1] = 0
+                if mars_karbonite_map[worker.x][worker.y - 1] != 0 and gc.can_harvest(worker.id, South) == False:
+                    mars_karbonite_map[worker.x][worker.y - 1] = 0
+                if mars_karbonite_map[worker.x + 1][worker.y - 1] != 0 and gc.can_harvest(worker.id, Southeast) == False:
+                    mars_karbonite_map[worker.x + 1][worker.y - 1] = 0
+
+            # Otherwise, move towards the nearest karbonite deposit to try and gather from it.
             if gc.is_move_ready(worker.id):
                 # Move towards the nearest karbonite deposit. TODO How to find nearest karbonite, preferably without searching the whole tree.
                 nearest_karbonite_x = -1
                 nearest_karbonite_y = -1
-                if .
+                nearest_karbonite_dist = -1
+
+                # Checks the Earth map if on Earth
+                if worker.planet == Earth:
+                    for x_node in earth_karbonite_map:
+                        for y_node in earth_karbonite_map[x_node]:
+                            check_dist = (abs(x_node - worker.x) + abs(y_node - worker.y))
+                            if (nearest_karbonite_dist == -1) or (nearest_karbonite_dist > check_dist):
+                                nearest_karbonite_x = x_node
+                                nearest_karbonite_y = y_node
+                                nearest_karbonite_dist = check_dist
+                    direction = move_towards(worker, nearest_karbonite_x, nearest_karbonite_y)
+                    if gc.is_move_ready(worker.id) and gc.can_move(worker.id, direction):
+                        gc.move_robot(worker.id, direction)
+                        # Done turn.
+                        return True
+
+                # Checks the Mars map if on Mars
+                if worker.planet == Mars:
+                    for x_node in mars_karbonite_map:
+                        for y_node in mars_karbonite_map(x_node):
+                            check_dist = (abs(x_node - worker.x) + abs(y_node - worker.y))
+                            if (nearest_karbonite_dist == -1) or (nearest_karbonite_dist > check_dist):
+                                nearest_karbonite_x = x_node
+                                nearest_karbonite_y = y_node
+                                nearest_karbonite_dist = check_dist
+                    direction = move_towards(worker, nearest_karbonite_x, nearest_karbonite_y)
+                    if gc.is_move_ready(worker.id) and gc.can_move(worker.id, direction):
+                        gc.move_robot(worker.id, direction)
+                        # Done turn.
+                        return True
 
     except Exception as e:
         print('Error:', e)
@@ -108,25 +178,25 @@ def move_away_from_unit (unit, run_from_unit):
             direction = Northeast
     return direction
 
-def move_towards_unit (unit, run_towards_unit):
+def move_towards (unit, towards_x, towards_y):
     direction = bc.Direction
-    if run_towards_unit.x == unit.x:
-        if run_towards_unit.y > unit.y:
+    if towards_x == unit.x:
+        if towards_y > unit.y:
             direction = North
-        elif run_towards_unit.y < unit.y:
+        elif towards_y < unit.y:
             direction = South
-    elif run_towards_unit.y == unit.y:
-        if run_towards_unit.x > unit.x:
+    elif towards_y == unit.y:
+        if towards_x > unit.x:
             direction = East
-        elif run_towards_unit.x < unit.x:
+        elif towards_x < unit.x:
             direction = West
     else:
-        if (run_towards_unit.x > unit.x) and (run_towards_unit.y > unit.y):
+        if (towards_x > unit.x) and (towards_y > unit.y):
             direction = Northeast
-        elif (run_towards_unit.x > unit.x) and (run_towards_unit.y < unit.y):
+        elif (towards_x > unit.x) and (towards_y < unit.y):
             direction = Southeast
-        elif (run_towards_unit.x < unit.x) and (run_towards_unit.y > unit.y):
+        elif (towards_x < unit.x) and (towards_y > unit.y):
             direction = Northwest
-        elif (run_towards_unit.x < unit.x) and (run_towards_unit.y < unit.y):
+        elif (towards_x < unit.x) and (towards_y < unit.y):
             direction = Southwest
     return direction
