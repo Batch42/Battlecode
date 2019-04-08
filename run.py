@@ -8,7 +8,9 @@ from Data import Counter
 
 gc = bc.GameController()
 dirs = list(bc.Direction)
-
+gc.queue_research(bc.UnitType.Worker)
+gc.queue_research(bc.UnitType.Healer)
+gc.queue_research(bc.UnitType.Ranger)
 while True:
 
     c = Counter()
