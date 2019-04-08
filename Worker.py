@@ -29,7 +29,7 @@ def workerWork(worker, c, gc, earth_karbonite_map, mars_karbonite_map):
                     # Find which direction to run in.
                     direction = move_away_from_unit(worker, thing)
                     # If worker can run in the chosen direction, run.
-                    if gc.is_move_ready(worker.id) and gc.can_move(worker.id, direcion):
+                    if gc.is_move_ready(worker.id) and gc.can_move(worker.id, direction):
                         gc.move_robot(worker.id, direction)
                         # Done turn.
                         return True
@@ -42,10 +42,10 @@ def workerWork(worker, c, gc, earth_karbonite_map, mars_karbonite_map):
                 if thing.unit_type == bc.UnitType.Factory and (thing.health < thing.max_health):
                     # Find the nearest thing in need of repair.
                     thing_distance = (abs(thing.location.map_location().x - worker.location.map_location().x) + abs(thing.location.map_location().y - worker.location.map_location().y))
-                    if damaged == None or (thing_distance > damaged_distance):
+                    if damaged is None or (thing_distance > damaged_distance):
                         damaged = thing
                         damaged_distance = thing_distance
-                if damaged != None:
+                if damaged is not None:
                     if gc.can_repair(worker.id, thing.id):
                         gc.repair(worker.id, thing.id)
                         # Done turn.
@@ -54,7 +54,7 @@ def workerWork(worker, c, gc, earth_karbonite_map, mars_karbonite_map):
                     else:
                         direction = move_towards(worker, damaged.location.map_location().x, damaged.location.map_location().y)
                         # If worker can move in the chosen direction, move.
-                        if gc.is_move_ready(worker.id) and gc.can_move(worker.id, direcion):
+                        if gc.is_move_ready(worker.id) and gc.can_move(worker.id, direction):
                             gc.move_robot(worker.id, direction)
                             # Done turn.
                             return True
@@ -92,54 +92,54 @@ def workerWork(worker, c, gc, earth_karbonite_map, mars_karbonite_map):
             # Do not return from this block.
             if worker.location.is_on_planet(bc.Planet.Earth):
                 if not (worker.location.map_location().x + 1 > len(earth_karbonite_map[worker.location.map_location().y])):
-                    if earth_karbonite_map[worker.location.map_location().x + 1][worker.location.map_location().y] != 0 and gc.can_harvest(worker.id, East) == False:
+                    if earth_karbonite_map[worker.location.map_location().x + 1][worker.location.map_location().y] != 0 and gc.can_harvest(worker.id, bc.Direction.East) == False:
                         earth_karbonite_map[worker.location.map_location().x + 1][worker.location.map_location().y] = 0
                     if not (worker.location.map_location().y + 1 > len(earth_karbonite_map)):
-                        if earth_karbonite_map[worker.location.map_location().x + 1][worker.location.map_location().y + 1] != 0 and gc.can_harvest(worker.id, Northeast) == False:
+                        if earth_karbonite_map[worker.location.map_location().x + 1][worker.location.map_location().y + 1] != 0 and gc.can_harvest(worker.id, bc.Direction.Northeast) == False:
                             earth_karbonite_map[worker.location.map_location().x + 1][worker.location.map_location().y + 1] = 0
                     if not (worker.location.map_location().y - 1 < 0):
-                        if earth_karbonite_map[worker.location.map_location().x + 1][worker.location.map_location().y - 1] != 0 and gc.can_harvest(worker.id, Southeast) == False:
+                        if earth_karbonite_map[worker.location.map_location().x + 1][worker.location.map_location().y - 1] != 0 and gc.can_harvest(worker.id, bc.Direction.Southeast) == False:
                             earth_karbonite_map[worker.location.map_location().x + 1][worker.location.map_location().y - 1] = 0
                 if not (worker.location.map_location().x - 1 < 0):
-                    if earth_karbonite_map[worker.location.map_location().x - 1][worker.location.map_location().y] != 0 and gc.can_harvest(worker.id, West) == False:
+                    if earth_karbonite_map[worker.location.map_location().x - 1][worker.location.map_location().y] != 0 and gc.can_harvest(worker.id, bc.Direction.West) == False:
                         earth_karbonite_map[worker.location.map_location().x - 1][worker.location.map_location().y] = 0
                     if not (worker.location.map_location().y + 1 > len(earth_karbonite_map)):
-                        if earth_karbonite_map[worker.location.map_location().x - 1][worker.location.map_location().y + 1] != 0 and gc.can_harvest(worker.id, Northwest) == False:
+                        if earth_karbonite_map[worker.location.map_location().x - 1][worker.location.map_location().y + 1] != 0 and gc.can_harvest(worker.id, bc.Direction.Northwest) == False:
                             earth_karbonite_map[worker.location.map_location().x - 1][worker.location.map_location().y + 1] = 0
                     if not (worker.location.map_location().y - 1 < 0):
-                        if earth_karbonite_map[worker.location.map_location().x - 1][worker.location.map_location().y - 1] != 0 and gc.can_harvest(worker.id, Southwest) == False:
+                        if earth_karbonite_map[worker.location.map_location().x - 1][worker.location.map_location().y - 1] != 0 and gc.can_harvest(worker.id, bc.Direction.Southwest) == False:
                             earth_karbonite_map[worker.location.map_location().x - 1][worker.location.map_location().y - 1] = 0
                 if not (worker.location.map_location().y + 1 > len(earth_karbonite_map)):
-                    if earth_karbonite_map[worker.location.map_location().x][worker.location.map_location().y + 1] != 0 and gc.can_harvest(worker.id, North) == False:
+                    if earth_karbonite_map[worker.location.map_location().x][worker.location.map_location().y + 1] != 0 and gc.can_harvest(worker.id, bc.Direction.North) == False:
                         earth_karbonite_map[worker.location.map_location().x][worker.location.map_location().y + 1] = 0
                 if not (worker.location.map_location().y - 1 < 0):
-                    if earth_karbonite_map[worker.location.map_location().x][worker.location.map_location().y - 1] != 0 and gc.can_harvest(worker.id, South) == False:
+                    if earth_karbonite_map[worker.location.map_location().x][worker.location.map_location().y - 1] != 0 and gc.can_harvest(worker.id, bc.Direction.South) == False:
                         earth_karbonite_map[worker.location.map_location().x][worker.location.map_location().y - 1] = 0
 
             elif worker.location.is_on_planet(bc.Planet.Mars):
                 if not (worker.location.map_location().x + 1 > len(mars_karbonite_map[worker.location.map_location().y])):
-                    if mars_karbonite_map[worker.location.map_location().x + 1][worker.location.map_location().y] != 0 and gc.can_harvest(worker.id, East) == False:
+                    if mars_karbonite_map[worker.location.map_location().x + 1][worker.location.map_location().y] != 0 and gc.can_harvest(worker.id, bc.Direction.East) == False:
                         mars_karbonite_map[worker.location.map_location().x + 1][worker.location.map_location().y] = 0
                     if not (worker.location.map_location().y + 1 > len(mars_karbonite_map)):
-                        if mars_karbonite_map[worker.location.map_location().x + 1][worker.location.map_location().y + 1] != 0 and gc.can_harvest(worker.id, Northeast) == False:
+                        if mars_karbonite_map[worker.location.map_location().x + 1][worker.location.map_location().y + 1] != 0 and gc.can_harvest(worker.id, bc.Direction.Northeast) == False:
                             mars_karbonite_map[worker.location.map_location().x + 1][worker.location.map_location().y + 1] = 0
                     if not (worker.location.map_location().y - 1 < 0):
-                        if mars_karbonite_map[worker.location.map_location().x + 1][worker.location.map_location().y - 1] != 0 and gc.can_harvest(worker.id, Southeast) == False:
+                        if mars_karbonite_map[worker.location.map_location().x + 1][worker.location.map_location().y - 1] != 0 and gc.can_harvest(worker.id, bc.Direction.Southeast) == False:
                             mars_karbonite_map[worker.location.map_location().x + 1][worker.location.map_location().y - 1] = 0
                 if not (worker.location.map_location().x - 1 < 0):
-                    if mars_karbonite_map[worker.location.map_location().x - 1][worker.location.map_location().y] != 0 and gc.can_harvest(worker.id, West) == False:
+                    if mars_karbonite_map[worker.location.map_location().x - 1][worker.location.map_location().y] != 0 and gc.can_harvest(worker.id, bc.Direction.West) == False:
                         mars_karbonite_map[worker.location.map_location().x - 1][worker.location.map_location().y] = 0
                     if not (worker.location.map_location().y + 1 > len(mars_karbonite_map)):
-                        if mars_karbonite_map[worker.location.map_location().x - 1][worker.location.map_location().y + 1] != 0 and gc.can_harvest(worker.id, Northwest) == False:
+                        if mars_karbonite_map[worker.location.map_location().x - 1][worker.location.map_location().y + 1] != 0 and gc.can_harvest(worker.id, bc.Direction.Northwest) == False:
                             mars_karbonite_map[worker.location.map_location().x - 1][worker.location.map_location().y + 1] = 0
                     if not (worker.location.map_location().y - 1 < 0):
-                        if mars_karbonite_map[worker.location.map_location().x - 1][worker.location.map_location().y - 1] != 0 and gc.can_harvest(worker.id, Southwest) == False:
+                        if mars_karbonite_map[worker.location.map_location().x - 1][worker.location.map_location().y - 1] != 0 and gc.can_harvest(worker.id, bc.Direction.Southwest) == False:
                             mars_karbonite_map[worker.location.map_location().x - 1][worker.location.map_location().y - 1] = 0
                 if not (worker.location.map_location().y + 1 > len(mars_karbonite_map)):
-                    if mars_karbonite_map[worker.location.map_location().x][worker.location.map_location().y + 1] != 0 and gc.can_harvest(worker.id, North) == False:
+                    if mars_karbonite_map[worker.location.map_location().x][worker.location.map_location().y + 1] != 0 and gc.can_harvest(worker.id, bc.Direction.North) == False:
                         mars_karbonite_map[worker.location.map_location().x][worker.location.map_location().y + 1] = 0
                 if not (worker.location.map_location().y - 1 < 0):
-                    if mars_karbonite_map[worker.location.map_location().x][worker.location.map_location().y - 1] != 0 and gc.can_harvest(worker.id, South) == False:
+                    if mars_karbonite_map[worker.location.map_location().x][worker.location.map_location().y - 1] != 0 and gc.can_harvest(worker.id, bc.Direction.South) == False:
                         mars_karbonite_map[worker.location.map_location().x][worker.location.map_location().y - 1] = 0
 
             # Lastly, move towards the nearest karbonite deposit to try and gather from it.
@@ -150,10 +150,10 @@ def workerWork(worker, c, gc, earth_karbonite_map, mars_karbonite_map):
                 nearest_karbonite_dist = -1
 
                 # Checks the Earth map if on Earth
-                if worker.planet == bc.Planet.Earth:
-                    for x_node in earth_karbonite_map:
-                        for y_node in earth_karbonite_map[x_node]:
-                            if earth_karbonite_map[x_node][y_node] > 0:
+                if worker.location.map_location().planet == bc.Planet.Earth:
+                    for y_node in range(0, len(earth_karbonite_map)):
+                        for x_node in range(0, len(earth_karbonite_map[y_node])):
+                            if earth_karbonite_map[y_node][x_node] > 0:
                                 check_dist = (abs(x_node - worker.location.map_location().x) + abs(y_node - worker.location.map_location().y))
                                 if (nearest_karbonite_dist == -1) or (nearest_karbonite_dist > check_dist):
                                     nearest_karbonite_x = x_node
@@ -166,10 +166,10 @@ def workerWork(worker, c, gc, earth_karbonite_map, mars_karbonite_map):
                         return True
 
                 # Checks the Mars map if on Mars
-                if worker.planet == bc.Planet.Mars:
-                    for x_node in mars_karbonite_map:
-                        for y_node in mars_karbonite_map(x_node):
-                            if mars_karbonite_map[x_node][y_node] > 0:
+                if worker.location.map_location().planet == bc.Planet.Mars:
+                    for y_node in range(0, len(mars_karbonite_map)):
+                        for x_node in range(0, len(mars_karbonite_map[y_node])):
+                            if mars_karbonite_map[y_node][x_node] > 0:
                                 check_dist = (abs(x_node - worker.location.map_location().x) + abs(y_node - worker.location.map_location().y))
                                 if (nearest_karbonite_dist == -1) or (nearest_karbonite_dist > check_dist):
                                     nearest_karbonite_x = x_node
@@ -189,44 +189,44 @@ def move_away_from_unit (unit, run_from_unit):
     direction = bc.Direction
     if run_from_unit.location.map_location().x == unit.location.map_location().x:
         if run_from_unit.location.map_location().y > unit.location.map_location().y:
-            direction = South
+            direction = bc.Direction.South
         elif run_from_unit.location.map_location().y < unit.location.map_location().y:
-            direction = North
+            direction = bc.Direction.North
     elif run_from_unit.location.map_location().y == unit.location.map_location().y:
         if run_from_unit.location.map_location().x > unit.location.map_location().x:
-            direction = West
+            direction = bc.Direction.West
         elif run_from_unit.location.map_location().x < unit.location.map_location().x:
-            direction = East
+            direction = bc.Direction.East
     else:
         if (run_from_unit.location.map_location().x > unit.location.map_location().x) and (run_from_unit.location.map_location().y > unit.location.map_location().y):
-            direction = Southwest
+            direction = bc.Direction.Southwest
         elif (run_from_unit.location.map_location().x > unit.location.map_location().x) and (run_from_unit.location.map_location().y < unit.location.map_location().y):
-            direction = Northwest
+            direction = bc.Direction.Northwest
         elif (run_from_unit.location.map_location().x < unit.location.map_location().x) and (run_from_unit.location.map_location().y > unit.location.map_location().y):
-            direction = Southeast
+            direction = bc.Direction.Southeast
         elif (run_from_unit.location.map_location().x < unit.location.map_location().x) and (run_from_unit.location.map_location().y < unit.location.map_location().y):
-            direction = Northeast
+            direction = bc.Direction.Northeast
     return direction
 
 def move_towards (unit, towards_x, towards_y):
     direction = bc.Direction
     if towards_x == unit.location.map_location().x:
         if towards_y > unit.location.map_location().y:
-            direction = North
+            direction = bc.Direction.North
         elif towards_y < unit.location.map_location().y:
-            direction = South
+            direction = bc.Direction.South
     elif towards_y == unit.location.map_location().y:
         if towards_x > unit.location.map_location().x:
-            direction = East
+            direction = bc.Direction.East
         elif towards_x < unit.location.map_location().x:
-            direction = West
+            direction = bc.Direction.West
     else:
         if (towards_x > unit.location.map_location().x) and (towards_y > unit.location.map_location().y):
-            direction = Northeast
+            direction = bc.Direction.Northeast
         elif (towards_x > unit.location.map_location().x) and (towards_y < unit.location.map_location().y):
-            direction = Southeast
+            direction = bc.Direction.Southeast
         elif (towards_x < unit.location.map_location().x) and (towards_y > unit.location.map_location().y):
-            direction = Northwest
+            direction = bc.Direction.Northwest
         elif (towards_x < unit.location.map_location().x) and (towards_y < unit.location.map_location().y):
-            direction = Southwest
+            direction = bc.Direction.Southwest
     return direction
