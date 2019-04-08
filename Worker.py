@@ -1,5 +1,4 @@
 import battlecode as bc
-gc = bc.GameController()
 # Derek's file so far.
 
 # Priority list goes as such:
@@ -14,7 +13,7 @@ gc = bc.GameController()
 factory_count = 0
 
 #takes a single worker
-def workerWork(worker):
+def workerWork(worker, c, gc):
     try:
         location = worker.location
         if location.is_on_map():
@@ -36,7 +35,7 @@ def workerWork(worker):
                         # Done turn.
                         return True
 
-            nearby = gc.sense_nearby_units(location.map_location(), worker.vision_range) #TODO How the heck does ranges work?
+            nearby = gc.sense_nearby_units(location.map_location(), worker.vision_range)
             damaged = NULL
             damaged_distance = 0
             for thing in nearby:
@@ -61,14 +60,28 @@ def workerWork(worker):
                             # Done turn.
                             return True
 
-            # If a blueprint should be placed, place it. TODO How many factories should we have at certain points in the game?
-            # TODO factory_count might not be a variable, fix with proper variable name.
-            if factory_count <= 6:
+            # If a blueprint should be placed, place it.
+            # If late enough in the game, try to build a rocket.
+            if (bc.game_turns() >= 650) and c.rockets == 0:
                 for directions in list(bc.Direction):
-                    if gc.can_blueprint(worker.id, UnitType.Factory, directions):
-                        gc.blueprint(worker.id, UnitType.Factory, directions)
-                        factory_count = factory_count + 1
+                    if gc.can_blueprint(worker.id, UnitType.Rocket, directions):
+                        gc.blueprint(worker.id, UnitType.Rocket, directions)
+                        c.rockets += 1
+                        # Done turn.
                         return True
+            # If have a sufficient buffer of karbonite, try to build a factory.
+            if gc.karbonite() > 100 * c.factories:
+                build_direction = bc.Direction
+                can_build = True
+                for directions in list(bc.Direction):
+                    if not gc.can_blueprint(worker.id, UnitType.Factory, directions):
+                        can_build = False
+                    else:
+                        build_direction = directions
+                if can_build and (gc.can_blueprint(worker.id, UnitType.Factory, build_direction)):
+                    gc.blueprint(worker.id, UnitType.Factory, directions)
+                    # Done turn.
+                    return True
 
             # If resources are near, go harvest some resources.
             for directions in list(bc.Direction):
@@ -78,7 +91,6 @@ def workerWork(worker):
 
             # If cannot harvest from an adjacent node, but the node comes up as harvestable on the map, update the map.
             # Do not return from this block.
-            # TODO earth_karbonite_map and mars_karbonite_map names should probably be updated once memory and run.py files are up to date.
             if worker.planet == Earth:
                 if earth_karbonite_map[worker.x + 1][worker.y + 1] != 0 and gc.can_harvest(worker.id, Northeast) == False:
                     earth_karbonite_map[worker.x + 1][worker.y + 1] = 0
@@ -116,7 +128,7 @@ def workerWork(worker):
 
             # Otherwise, move towards the nearest karbonite deposit to try and gather from it.
             if gc.is_move_ready(worker.id):
-                # Move towards the nearest karbonite deposit. TODO How to find nearest karbonite, preferably without searching the whole tree.
+                # Move towards the nearest karbonite deposit.
                 nearest_karbonite_x = -1
                 nearest_karbonite_y = -1
                 nearest_karbonite_dist = -1
