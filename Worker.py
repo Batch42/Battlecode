@@ -1,4 +1,5 @@
 import battlecode as bc
+
 # Derek's file so far.
 
 # Priority list goes as such:
@@ -22,7 +23,8 @@ def workerWork(worker, c, gc, earth_karbonite_map, mars_karbonite_map):
                 if gc.can_build(worker.id, thing.id):
                     gc.build(worker.id, thing.id)
                     # Done turn.
-                    return True
+
+
 
                 # If it's an enemy, run.
                 elif (thing.team != worker.team) and (thing.unit_type == bc.UnitType.Knight or bc.UnitType.Ranger or bc.UnitType.Mage):
@@ -87,6 +89,7 @@ def workerWork(worker, c, gc, earth_karbonite_map, mars_karbonite_map):
                 if gc.can_harvest(worker.id, directions):
                     gc.harvest(worker.id, directions)
                     return True
+
 
             # If cannot harvest from an adjacent node, but the node comes up as harvestable on the map, update the map.
             # Do not return from this block.
