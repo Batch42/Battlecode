@@ -31,7 +31,6 @@ def rangerWork(ranger,c,gc):
                     direction = d.Northeast
 
             if gc.is_attack_ready(ranger.id):
-                print("Ranger attacks")
                 gc.attack(ranger.id,thing.id)
             # If ranger can retreat in the chosen direction, do so.
             if gc.is_move_ready(ranger.id) and gc.can_move(ranger.id, direction):
