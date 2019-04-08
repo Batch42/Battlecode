@@ -61,6 +61,10 @@ gc.queue_research(bc.UnitType.Worker)
 gc.queue_research(bc.UnitType.Healer)
 gc.queue_research(bc.UnitType.Ranger)
 
+#print(bc.PlanetMap.initial_karbonite_at(earth_map, temp_location))
+find_karbonite(earth_map, bc.Planet.Earth, EarthX, EarthY, earth_karbonite_map)
+find_karbonite(mars_map, bc.Planet.Mars, MarsX, MarsY, mars_karbonite_map)
+
 while True:
 
     c = Counter()
