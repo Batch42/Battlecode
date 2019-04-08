@@ -91,7 +91,7 @@ def workerWork(worker, c, gc, earth_karbonite_map, mars_karbonite_map):
             # If cannot harvest from an adjacent node, but the node comes up as harvestable on the map, update the map.
             # Do not return from this block.
             if worker.location.is_on_planet(bc.Planet.Earth):
-                if not (worker.location.map_location().x + 1 > len(earth_karbonite_map[worker.location.map_location().x])):
+                if not (worker.location.map_location().x + 1 > len(earth_karbonite_map[worker.location.map_location().y])):
                     if earth_karbonite_map[worker.location.map_location().x + 1][worker.location.map_location().y] != 0 and gc.can_harvest(worker.id, East) == False:
                         earth_karbonite_map[worker.location.map_location().x + 1][worker.location.map_location().y] = 0
                     if not (worker.location.map_location().y + 1 > len(earth_karbonite_map)):
@@ -117,7 +117,7 @@ def workerWork(worker, c, gc, earth_karbonite_map, mars_karbonite_map):
                         earth_karbonite_map[worker.location.map_location().x][worker.location.map_location().y - 1] = 0
 
             elif worker.location.is_on_planet(bc.Planet.Mars):
-                if not (worker.location.map_location().x + 1 > len(mars_karbonite_map[worker.location.map_location().x])):
+                if not (worker.location.map_location().x + 1 > len(mars_karbonite_map[worker.location.map_location().y])):
                     if mars_karbonite_map[worker.location.map_location().x + 1][worker.location.map_location().y] != 0 and gc.can_harvest(worker.id, East) == False:
                         mars_karbonite_map[worker.location.map_location().x + 1][worker.location.map_location().y] = 0
                     if not (worker.location.map_location().y + 1 > len(mars_karbonite_map)):
