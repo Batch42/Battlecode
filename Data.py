@@ -5,3 +5,4 @@ class Counter:
         self.healers=0
         self.factories=0
         self.rockets=0
+        self.turns=0
