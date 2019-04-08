@@ -53,23 +53,28 @@ def workerWork(worker,c,gc):
                         gc.move_robot(worker.id, direction)
 
             # If a blueprint should be placed, place it. <TODO> How many factories should we have at certain points in the game?
-            if factory_count <= 6:
+            if gc.karbonite() > 100*factory_count:
                 for directions in list(bc.Direction):
                     if gc.can_blueprint(worker.id, bc.UnitType.Factory, directions):
                         gc.blueprint(worker.id, bc.UnitType.Factory, directions)
                         factory_count = factory_count + 1
-
+            crowdcount=0
+            harvest=False
             # Otherwise, go harvest some resources.
             for direction in list(bc.Direction):
+                if not gc.can_move(worker.id, direction):
+                    crowdcount+=1
                 if gc.can_harvest(worker.id, direction):
+                    harvet = True
                     gc.harvest(worker.id, direction)
             #Get out of the way
-            deck=list(bc.Direction)
-            shuffle(deck)
-            for direction in deck:
-                if gc.is_move_ready(worker.id) and gc.can_move(worker.id, direction):
-                    gc.move_robot(worker.id, direction)
-                    break
+            if crowdcount>4 or not harvest:
+                deck=list(bc.Direction)
+                shuffle(deck)
+                for direction in deck:
+                    if gc.is_move_ready(worker.id) and gc.can_move(worker.id, direction):
+                        gc.move_robot(worker.id, direction)
+                        break
             return True
 
     except Exception as e:
