@@ -60,6 +60,11 @@ mars_karbonite_map = []
 gc.queue_research(bc.UnitType.Worker)
 gc.queue_research(bc.UnitType.Healer)
 gc.queue_research(bc.UnitType.Ranger)
+
+#print(bc.PlanetMap.initial_karbonite_at(earth_map, temp_location))
+find_karbonite(earth_map, bc.Planet.Earth, EarthX, EarthY, earth_karbonite_map)
+find_karbonite(mars_map, bc.Planet.Mars, MarsX, MarsY, mars_karbonite_map)
+
 while True:
 
     c = Counter()
@@ -75,7 +80,7 @@ while True:
 
     for unit in gc.my_units():
         if unit.unit_type==bc.UnitType.Worker:
-            Worker.workerWork(unit,c,gc)
+            Worker.workerWork(unit,c,gc, earth_karbonite_map, mars_karbonite_map)
         if unit.unit_type==bc.UnitType.Ranger:
             Ranger.rangerWork(unit,c,gc)
         if unit.unit_type==bc.UnitType.Factory:
@@ -84,6 +89,7 @@ while True:
             Healer.healerWork(unit,c,gc)
 
     Econ.resetFactory()
+    c.turns += 1
 
     sys.stdout.flush()
     sys.stderr.flush()
