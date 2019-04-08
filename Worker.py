@@ -92,55 +92,55 @@ def workerWork(worker, c, gc, earth_karbonite_map, mars_karbonite_map):
             # Do not return from this block.
             if worker.location.is_on_planet(bc.Planet.Earth):
                 if not (worker.location.map_location().x + 1 > len(earth_karbonite_map[worker.location.map_location().y])):
-                    if earth_karbonite_map[worker.location.map_location().x + 1][worker.location.map_location().y] != 0 and gc.can_harvest(worker.id, bc.Direction.East) == False:
-                        earth_karbonite_map[worker.location.map_location().x + 1][worker.location.map_location().y] = 0
+                    if earth_karbonite_map[worker.location.map_location().y][worker.location.map_location().x + 1] != 0 and gc.can_harvest(worker.id, bc.Direction.East) == False:
+                        earth_karbonite_map[worker.location.map_location().y][worker.location.map_location().x + 1] = 0
                     if not (worker.location.map_location().y + 1 > len(earth_karbonite_map)):
-                        if earth_karbonite_map[worker.location.map_location().x + 1][worker.location.map_location().y + 1] != 0 and gc.can_harvest(worker.id, bc.Direction.Northeast) == False:
-                            earth_karbonite_map[worker.location.map_location().x + 1][worker.location.map_location().y + 1] = 0
+                        if earth_karbonite_map[worker.location.map_location().y + 1][worker.location.map_location().x + 1] != 0 and gc.can_harvest(worker.id, bc.Direction.Northeast) == False:
+                            earth_karbonite_map[worker.location.map_location().y + 1][worker.location.map_location().x + 1] = 0
                     if not (worker.location.map_location().y - 1 < 0):
-                        if earth_karbonite_map[worker.location.map_location().x + 1][worker.location.map_location().y - 1] != 0 and gc.can_harvest(worker.id, bc.Direction.Southeast) == False:
-                            earth_karbonite_map[worker.location.map_location().x + 1][worker.location.map_location().y - 1] = 0
+                        if earth_karbonite_map[worker.location.map_location().y - 1][worker.location.map_location().x + 1] != 0 and gc.can_harvest(worker.id, bc.Direction.Southeast) == False:
+                            earth_karbonite_map[worker.location.map_location().y - 1][worker.location.map_location().x + 1] = 0
                 if not (worker.location.map_location().x - 1 < 0):
-                    if earth_karbonite_map[worker.location.map_location().x - 1][worker.location.map_location().y] != 0 and gc.can_harvest(worker.id, bc.Direction.West) == False:
-                        earth_karbonite_map[worker.location.map_location().x - 1][worker.location.map_location().y] = 0
+                    if earth_karbonite_map[worker.location.map_location().y][worker.location.map_location().x - 1] != 0 and gc.can_harvest(worker.id, bc.Direction.West) == False:
+                        earth_karbonite_map[worker.location.map_location().y][worker.location.map_location().x - 1] = 0
                     if not (worker.location.map_location().y + 1 > len(earth_karbonite_map)):
-                        if earth_karbonite_map[worker.location.map_location().x - 1][worker.location.map_location().y + 1] != 0 and gc.can_harvest(worker.id, bc.Direction.Northwest) == False:
-                            earth_karbonite_map[worker.location.map_location().x - 1][worker.location.map_location().y + 1] = 0
+                        if earth_karbonite_map[worker.location.map_location().y + 1][worker.location.map_location().x - 1] != 0 and gc.can_harvest(worker.id, bc.Direction.Northwest) == False:
+                            earth_karbonite_map[worker.location.map_location().y + 1][worker.location.map_location().x - 1] = 0
                     if not (worker.location.map_location().y - 1 < 0):
-                        if earth_karbonite_map[worker.location.map_location().x - 1][worker.location.map_location().y - 1] != 0 and gc.can_harvest(worker.id, bc.Direction.Southwest) == False:
-                            earth_karbonite_map[worker.location.map_location().x - 1][worker.location.map_location().y - 1] = 0
+                        if earth_karbonite_map[worker.location.map_location().y - 1][worker.location.map_location().x - 1] != 0 and gc.can_harvest(worker.id, bc.Direction.Southwest) == False:
+                            earth_karbonite_map[worker.location.map_location().y - 1][worker.location.map_location().x - 1] = 0
                 if not (worker.location.map_location().y + 1 > len(earth_karbonite_map)):
-                    if earth_karbonite_map[worker.location.map_location().x][worker.location.map_location().y + 1] != 0 and gc.can_harvest(worker.id, bc.Direction.North) == False:
-                        earth_karbonite_map[worker.location.map_location().x][worker.location.map_location().y + 1] = 0
+                    if earth_karbonite_map[worker.location.map_location().y + 1][worker.location.map_location().x] != 0 and gc.can_harvest(worker.id, bc.Direction.North) == False:
+                        earth_karbonite_map[worker.location.map_location().y + 1][worker.location.map_location().x] = 0
                 if not (worker.location.map_location().y - 1 < 0):
-                    if earth_karbonite_map[worker.location.map_location().x][worker.location.map_location().y - 1] != 0 and gc.can_harvest(worker.id, bc.Direction.South) == False:
-                        earth_karbonite_map[worker.location.map_location().x][worker.location.map_location().y - 1] = 0
+                    if earth_karbonite_map[worker.location.map_location().y - 1][worker.location.map_location().x] != 0 and gc.can_harvest(worker.id, bc.Direction.South) == False:
+                        earth_karbonite_map[worker.location.map_location().y - 1][worker.location.map_location().x] = 0
 
             elif worker.location.is_on_planet(bc.Planet.Mars):
                 if not (worker.location.map_location().x + 1 > len(mars_karbonite_map[worker.location.map_location().y])):
-                    if mars_karbonite_map[worker.location.map_location().x + 1][worker.location.map_location().y] != 0 and gc.can_harvest(worker.id, bc.Direction.East) == False:
-                        mars_karbonite_map[worker.location.map_location().x + 1][worker.location.map_location().y] = 0
+                    if mars_karbonite_map[worker.location.map_location().y][worker.location.map_location().x + 1] != 0 and gc.can_harvest(worker.id, bc.Direction.East) == False:
+                        mars_karbonite_map[worker.location.map_location().y][worker.location.map_location().x + 1] = 0
                     if not (worker.location.map_location().y + 1 > len(mars_karbonite_map)):
-                        if mars_karbonite_map[worker.location.map_location().x + 1][worker.location.map_location().y + 1] != 0 and gc.can_harvest(worker.id, bc.Direction.Northeast) == False:
-                            mars_karbonite_map[worker.location.map_location().x + 1][worker.location.map_location().y + 1] = 0
+                        if mars_karbonite_map[worker.location.map_location().y + 1][worker.location.map_location().x + 1] != 0 and gc.can_harvest(worker.id, bc.Direction.Northeast) == False:
+                            mars_karbonite_map[worker.location.map_location().y + 1][worker.location.map_location().x + 1] = 0
                     if not (worker.location.map_location().y - 1 < 0):
-                        if mars_karbonite_map[worker.location.map_location().x + 1][worker.location.map_location().y - 1] != 0 and gc.can_harvest(worker.id, bc.Direction.Southeast) == False:
-                            mars_karbonite_map[worker.location.map_location().x + 1][worker.location.map_location().y - 1] = 0
+                        if mars_karbonite_map[worker.location.map_location().y - 1][worker.location.map_location().x + 1] != 0 and gc.can_harvest(worker.id, bc.Direction.Southeast) == False:
+                            mars_karbonite_map[worker.location.map_location().y - 1][worker.location.map_location().x + 1] = 0
                 if not (worker.location.map_location().x - 1 < 0):
-                    if mars_karbonite_map[worker.location.map_location().x - 1][worker.location.map_location().y] != 0 and gc.can_harvest(worker.id, bc.Direction.West) == False:
-                        mars_karbonite_map[worker.location.map_location().x - 1][worker.location.map_location().y] = 0
+                    if mars_karbonite_map[worker.location.map_location().y][worker.location.map_location().x - 1] != 0 and gc.can_harvest(worker.id, bc.Direction.West) == False:
+                        mars_karbonite_map[worker.location.map_location().y][worker.location.map_location().x - 1] = 0
                     if not (worker.location.map_location().y + 1 > len(mars_karbonite_map)):
-                        if mars_karbonite_map[worker.location.map_location().x - 1][worker.location.map_location().y + 1] != 0 and gc.can_harvest(worker.id, bc.Direction.Northwest) == False:
-                            mars_karbonite_map[worker.location.map_location().x - 1][worker.location.map_location().y + 1] = 0
+                        if mars_karbonite_map[worker.location.map_location().y + 1][worker.location.map_location().x - 1] != 0 and gc.can_harvest(worker.id, bc.Direction.Northwest) == False:
+                            mars_karbonite_map[worker.location.map_location().y + 1][worker.location.map_location().x - 1] = 0
                     if not (worker.location.map_location().y - 1 < 0):
-                        if mars_karbonite_map[worker.location.map_location().x - 1][worker.location.map_location().y - 1] != 0 and gc.can_harvest(worker.id, bc.Direction.Southwest) == False:
-                            mars_karbonite_map[worker.location.map_location().x - 1][worker.location.map_location().y - 1] = 0
+                        if mars_karbonite_map[worker.location.map_location().y - 1][worker.location.map_location().x - 1] != 0 and gc.can_harvest(worker.id, bc.Direction.Southwest) == False:
+                            mars_karbonite_map[worker.location.map_location().y - 1][worker.location.map_location().x - 1] = 0
                 if not (worker.location.map_location().y + 1 > len(mars_karbonite_map)):
-                    if mars_karbonite_map[worker.location.map_location().x][worker.location.map_location().y + 1] != 0 and gc.can_harvest(worker.id, bc.Direction.North) == False:
-                        mars_karbonite_map[worker.location.map_location().x][worker.location.map_location().y + 1] = 0
+                    if mars_karbonite_map[worker.location.map_location().y + 1][worker.location.map_location().x] != 0 and gc.can_harvest(worker.id, bc.Direction.North) == False:
+                        mars_karbonite_map[worker.location.map_location().y + 1][worker.location.map_location().x] = 0
                 if not (worker.location.map_location().y - 1 < 0):
-                    if mars_karbonite_map[worker.location.map_location().x][worker.location.map_location().y - 1] != 0 and gc.can_harvest(worker.id, bc.Direction.South) == False:
-                        mars_karbonite_map[worker.location.map_location().x][worker.location.map_location().y - 1] = 0
+                    if mars_karbonite_map[worker.location.map_location().y - 1][worker.location.map_location().x] != 0 and gc.can_harvest(worker.id, bc.Direction.South) == False:
+                        mars_karbonite_map[worker.location.map_location().y - 1][worker.location.map_location().x] = 0
 
             # Lastly, move towards the nearest karbonite deposit to try and gather from it.
             if gc.is_move_ready(worker.id):
