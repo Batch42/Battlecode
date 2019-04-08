@@ -8,6 +8,55 @@ from Data import Counter
 
 gc = bc.GameController()
 dirs = list(bc.Direction)
+
+def find_map_limit(p, XorY):
+    min = 19
+    max = 49
+    planet_map = gc.starting_map(p)
+    increments = [20, 10, 5, 3, 2, 1]
+    cur_inc = 0
+    decrease = False
+
+    while min != max - 1:
+        tempmin = min + increments[cur_inc]
+        if XorY == 'X':
+            temp_location = bc.MapLocation(p, tempmin, 0)
+        elif XorY == 'Y':
+            temp_location = bc.MapLocation(p, 0, tempmin)
+
+        if planet_map.on_map(temp_location):
+            min = tempmin
+        else:
+            max = tempmin
+            decrease = True
+        if decrease:
+            cur_inc += 1
+
+    return min
+
+def find_karbonite(planetmap, planet, Xcoords, Ycoords, map):
+    for y in range(Ycoords+1):
+        templist = []
+        for x in range(Xcoords+1):
+            temploc = bc.MapLocation(planet, x, y)
+            if bc.PlanetMap.is_passable_terrain_at(planetmap, temploc):
+                templist.append(bc.PlanetMap.initial_karbonite_at(planetmap, temploc))
+            else:
+                templist.append(0)
+        map.append(templist)
+
+
+
+
+EarthX = find_map_limit(bc.Planet.Earth, 'X')
+EarthY = find_map_limit(bc.Planet.Earth, 'Y')
+MarsX = find_map_limit(bc.Planet.Mars, 'X')
+MarsY = find_map_limit(bc.Planet.Mars, 'Y')
+earth_map = gc.starting_map(bc.Planet.Earth)
+mars_map = gc.starting_map(bc.Planet.Mars)
+earth_karbonite_map = []
+mars_karbonite_map = []
+
 gc.queue_research(bc.UnitType.Worker)
 gc.queue_research(bc.UnitType.Healer)
 gc.queue_research(bc.UnitType.Ranger)
