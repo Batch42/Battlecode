@@ -90,7 +90,6 @@ while True:
 
     Econ.resetFactory()
     c.turns += 1
-
     sys.stdout.flush()
     sys.stderr.flush()
     gc.next_turn()
