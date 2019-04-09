@@ -1,4 +1,5 @@
 import battlecode as bc
+import random
 # Derek's file so far.
 
 # Priority list goes as such:
@@ -166,7 +167,7 @@ def workerWork(worker, c, gc, earth_karbonite_map, mars_karbonite_map):
                         return True
 
                 # Checks the Mars map if on Mars
-                if worker.location.map_location().planet == bc.Planet.Mars:
+                elif worker.location.map_location().planet == bc.Planet.Mars:
                     for y_node in range(0, len(mars_karbonite_map)):
                         for x_node in range(0, len(mars_karbonite_map[y_node])):
                             if mars_karbonite_map[y_node][x_node] > 0:
@@ -180,6 +181,10 @@ def workerWork(worker, c, gc, earth_karbonite_map, mars_karbonite_map):
                         gc.move_robot(worker.id, direction)
                         # Done turn.
                         return True
+                else:
+                    gc.move_robot(worker.id, random.choice(list(bc.Direction)))
+                    # Done turn.
+                    return True
 
     except Exception as e:
         print('Error:', e)
