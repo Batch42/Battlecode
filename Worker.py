@@ -1,12 +1,10 @@
 import battlecode as bc
 from random import shuffle
 
-
 FACTORYSLOPE=100
 ROCKETSLOPE=100
 #takes a single worker
 def workerWork(worker,c,gc):
-
     try:
         working = False
         location = worker.location
@@ -24,7 +22,6 @@ def workerWork(worker,c,gc):
                     working = True
 
 
-
                 # If it's something in need of repair, repair it.
                 elif gc.can_repair(worker.id, thing.id):
                     gc.repair(worker.id, thing.id)
@@ -34,37 +31,29 @@ def workerWork(worker,c,gc):
                 # If it's an enemy, run.
                 elif (thing.team != worker.team) and (thing.unit_type == bc.UnitType.Knight or bc.UnitType.Ranger or bc.UnitType.Mage):
                     # Find which direction to run in.
-                    direction = move_away_from_unit(worker, thing)
+                    d = bc.Direction
+                    if thing.location.map_location().x == worker.location.map_location().x:
+                        if thing.location.map_location().y > worker.location.map_location().y:
+                            direction = d.South
+                        elif thing.location.map_location().y < worker.location.map_location().y:
+                            direction = d.North
+                    elif thing.location.map_location().y == worker.location.map_location().y:
+                        if thing.location.map_location().x > worker.location.map_location().x:
+                            direction = d.West
+                        elif thing.location.map_location().x < worker.location.map_location().x:
+                            direction = d.East
+                    else:
+                        if (thing.location.map_location().x > worker.location.map_location().x) and (thing.location.map_location().y > worker.location.map_location().y):
+                            direction = d.Southwest
+                        elif (thing.location.map_location().x > worker.location.map_location().x) and (thing.location.map_location().y < worker.location.map_location().y):
+                            direction = d.Northwest
+                        elif (thing.location.map_location().x < worker.location.map_location().x) and (thing.location.map_location().y > worker.location.map_location().y):
+                            direction = d.Southeast
+                        elif (thing.location.map_location().x < worker.location.map_location().x) and (thing.location.map_location().y < worker.location.map_location().y):
+                            direction = d.Northeast
                     # If worker can run in the chosen direction, run.
                     if gc.is_move_ready(worker.id) and gc.can_move(worker.id, direction):
                         gc.move_robot(worker.id, direction)
-                        # Done turn.
-                        return True
-
-            nearby = gc.sense_nearby_units(location.map_location(), worker.vision_range)
-            damaged = None
-            damaged_distance = 0
-            for thing in nearby:
-                # If it's something in need of repair, repair it.
-                if thing.unit_type == bc.UnitType.Factory and (thing.health < thing.max_health):
-                    # Find the nearest thing in need of repair.
-                    thing_distance = (abs(thing.location.map_location().x - worker.location.map_location().x) + abs(thing.location.map_location().y - worker.location.map_location().y))
-                    if damaged is None or (thing_distance > damaged_distance):
-                        damaged = thing
-                        damaged_distance = thing_distance
-                if damaged is not None:
-                    if gc.can_repair(worker.id, thing.id):
-                        gc.repair(worker.id, thing.id)
-                        # Done turn.
-                        return True
-                    # Move towards the thing in need of repair.
-                    else:
-                        direction = move_towards(worker, damaged.location.map_location().x, damaged.location.map_location().y)
-                        # If worker can move in the chosen direction, move.
-                        if gc.is_move_ready(worker.id) and gc.can_move(worker.id, direction):
-                            gc.move_robot(worker.id, direction)
-                            # Done turn.
-                            return True
 
             # If a blueprint should be placed, place it. <TODO> How many factories should we have at certain points in the game?
             if gc.karbonite() > FACTORYSLOPE*c.factories:
@@ -97,4 +86,3 @@ def workerWork(worker,c,gc):
             return True
     except Exception as e:
         print('Error:', e)
-

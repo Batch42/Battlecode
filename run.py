@@ -65,7 +65,6 @@ gc.queue_research(bc.UnitType.Healer)
 gc.queue_research(bc.UnitType.Rocket)
 gc.queue_research(bc.UnitType.Worker)
 gc.queue_research(bc.UnitType.Ranger)
-
 gc.queue_research(bc.UnitType.Healer)
 gc.queue_research(bc.UnitType.Rocket)
 #print(bc.PlanetMap.initial_karbonite_at(earth_map, temp_location))
@@ -100,7 +99,6 @@ while True:
 
     Econ.resetFactory()
     c.turns += 1
-
     sys.stdout.flush()
     sys.stderr.flush()
     gc.next_turn()
