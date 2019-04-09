@@ -2,17 +2,22 @@ import battlecode as bc
 
 #takes a single healer
 def healerWork(healer,c,gc):
-
+    d = bc.Direction
     location = healer.location
     if location.is_on_map():
         nearby = gc.sense_nearby_units(location.map_location(), 7)
         close = gc.sense_nearby_units(location.map_location(), 5)
-
+        if healer.location.map_location().planet == bc.Planet.Earth:
+            for thing in gc.sense_nearby_units(location.map_location(), 2):
+                if thing.unit_type == bc.UnitType.Rocket:
+                    if gc.can_load(thing.id,healer.id):
+                        gc.load(thing.id,healer.id)
+                        return True
         #Find ally units within line of sight, and attempt to approach, unless they're also a healer.
         for target in nearby:
             if (target.team == healer.team) and (target.unit_type != bc.UnitType.Healer):
                 # Find which direction to run in.
-                d = bc.Direction
+
                 if target.location.map_location().x == healer.location.map_location().x:
                     if target.location.map_location().y > healer.location.map_location().y:
                         direction = d.North

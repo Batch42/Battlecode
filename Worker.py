@@ -1,28 +1,31 @@
 import battlecode as bc
 from random import shuffle
-# Derek's file so far.
 
-# Variables that need to be saved go here:
-factory_count = 0
-
+FACTORYSLOPE=100
+ROCKETSLOPE=100
 #takes a single worker
 def workerWork(worker,c,gc):
-    global factory_count
     try:
+        working = False
         location = worker.location
         if location.is_on_map():
             nearby = gc.sense_nearby_units(location.map_location(), 2)
-            for thing in nearby:
+            if worker.location.map_location().planet == bc.Planet.Earth:
+                for thing in nearby:
+                    if thing.unit_type == bc.UnitType.Rocket:
+                        if gc.can_load(thing.id,worker.id):
+                            gc.load(thing.id,worker.id)
+                            return True
                 # If it's a blueprint, build it.
                 if gc.can_build(worker.id, thing.id):
                     gc.build(worker.id, thing.id)
-                    # Done turn.
+                    working = True
 
 
                 # If it's something in need of repair, repair it.
                 elif gc.can_repair(worker.id, thing.id):
                     gc.repair(worker.id, thing.id)
-                    # Done turn.
+                    working = True
 
 
                 # If it's an enemy, run.
@@ -53,22 +56,27 @@ def workerWork(worker,c,gc):
                         gc.move_robot(worker.id, direction)
 
             # If a blueprint should be placed, place it. <TODO> How many factories should we have at certain points in the game?
-            if gc.karbonite() > 100*factory_count:
+            if gc.karbonite() > FACTORYSLOPE*c.factories:
                 for directions in list(bc.Direction):
                     if gc.can_blueprint(worker.id, bc.UnitType.Factory, directions):
                         gc.blueprint(worker.id, bc.UnitType.Factory, directions)
-                        factory_count = factory_count + 1
+                        working = True
+            elif gc.karbonite() > ROCKETSLOPE*c.rockets:
+                for directions in list(bc.Direction):
+                    if gc.can_blueprint(worker.id, bc.UnitType.Rocket, directions):
+                        gc.blueprint(worker.id, bc.UnitType.Rocket, directions)
+                        working = True
             crowdcount=0
-            harvest=False
+
             # Otherwise, go harvest some resources.
             for direction in list(bc.Direction):
                 if not gc.can_move(worker.id, direction):
                     crowdcount+=1
                 if gc.can_harvest(worker.id, direction):
-                    harvet = True
+                    working = True
                     gc.harvest(worker.id, direction)
             #Get out of the way
-            if crowdcount>4 or not harvest:
+            if crowdcount>4 or not working:
                 deck=list(bc.Direction)
                 shuffle(deck)
                 for direction in deck:
@@ -76,7 +84,5 @@ def workerWork(worker,c,gc):
                         gc.move_robot(worker.id, direction)
                         break
             return True
-
     except Exception as e:
         print('Error:', e)
-        traceback.print_exc()

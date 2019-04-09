@@ -58,10 +58,20 @@ earth_karbonite_map = []
 mars_karbonite_map = []
 
 gc.queue_research(bc.UnitType.Worker)
-gc.queue_research(bc.UnitType.Healer)
+gc.queue_research(bc.UnitType.Worker)
 gc.queue_research(bc.UnitType.Ranger)
-while True:
+gc.queue_research(bc.UnitType.Worker)
+gc.queue_research(bc.UnitType.Healer)
+gc.queue_research(bc.UnitType.Rocket)
+gc.queue_research(bc.UnitType.Worker)
+gc.queue_research(bc.UnitType.Ranger)
+gc.queue_research(bc.UnitType.Healer)
+gc.queue_research(bc.UnitType.Rocket)
+#print(bc.PlanetMap.initial_karbonite_at(earth_map, temp_location))
+find_karbonite(earth_map, bc.Planet.Earth, EarthX, EarthY, earth_karbonite_map)
+find_karbonite(mars_map, bc.Planet.Mars, MarsX, MarsY, mars_karbonite_map)
 
+while True:
     c = Counter()
     for unit in gc.my_units():
         if unit.unit_type==bc.UnitType.Worker:
@@ -72,6 +82,8 @@ while True:
             c.factories+=1
         if unit.unit_type==bc.UnitType.Healer:
             c.healers+=1
+        if unit.unit_type==bc.UnitType.Rocket:
+            c.rockets+=1
 
     for unit in gc.my_units():
         if unit.unit_type==bc.UnitType.Worker:
@@ -80,11 +92,13 @@ while True:
             Ranger.rangerWork(unit,c,gc)
         if unit.unit_type==bc.UnitType.Factory:
             Econ.factoryWork(unit,c,gc)
+        if unit.unit_type==bc.UnitType.Rocket:
+            Econ.rocketWork(unit,c,gc,MarsX,MarsY)
         if unit.unit_type==bc.UnitType.Healer:
             Healer.healerWork(unit,c,gc)
 
     Econ.resetFactory()
-
+    c.turns += 1
     sys.stdout.flush()
     sys.stderr.flush()
     gc.next_turn()
