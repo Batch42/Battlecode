@@ -5,6 +5,12 @@ def rangerWork(ranger,c,gc):
     location = ranger.location
     if location.is_in_garrison():
         return True
+    if ranger.location.map_location().planet == bc.Planet.Earth:
+        for thing in gc.sense_nearby_units(location.map_location(), 2):
+            if thing.unit_type == bc.UnitType.Rocket:
+                if gc.can_load(thing.id,ranger.id):
+                    gc.load(thing.id,ranger.id)
+                    return True
     nearby = gc.sense_nearby_units(location.map_location(), 50)
     for thing in nearby:
         if (thing.team != ranger.team) and gc.can_attack(ranger.id,thing.id):
