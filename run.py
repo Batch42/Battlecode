@@ -88,7 +88,7 @@ while True:
 
     for unit in gc.my_units():
         if unit.unit_type==bc.UnitType.Worker:
-            Worker.workerWork(unit,c,gc, earth_karbonite_map, mars_karbonite_map)
+            Worker.workerWork(unit,c,gc)
         if unit.unit_type==bc.UnitType.Ranger:
             Ranger.rangerWork(unit,c,gc)
         if unit.unit_type==bc.UnitType.Factory:
@@ -100,7 +100,7 @@ while True:
 
     Econ.resetFactory()
     c.turns += 1
-    
+
     sys.stdout.flush()
     sys.stderr.flush()
     gc.next_turn()
